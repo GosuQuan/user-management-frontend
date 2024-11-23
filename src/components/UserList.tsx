@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Space, Button, message, Popconfirm } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { User } from '../types/user';
-import { userApi } from '../services/api';
+import { adminApi } from '../services/api';
 import UserModal from './UserModal';
 
 const UserList: React.FC = () => {
@@ -14,7 +14,7 @@ const UserList: React.FC = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const data = await userApi.getUsers();
+      const { users: data } = await adminApi.getAllUsers();
       setUsers(data);
     } catch (error) {
       message.error('获取用户列表失败');
@@ -29,11 +29,14 @@ const UserList: React.FC = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await userApi.deleteUser(id);
+      setLoading(true);
+      await adminApi.deleteUser(id);
       message.success('删除成功');
       fetchUsers();
     } catch (error) {
       message.error('删除失败');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,6 +48,7 @@ const UserList: React.FC = () => {
   const handleModalClose = () => {
     setCurrentUser(null);
     setModalVisible(false);
+    fetchUsers();
   };
 
   const handleModalSuccess = () => {

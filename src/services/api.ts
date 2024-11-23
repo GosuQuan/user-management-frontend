@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { User, UserFormData } from '../types/user';
+import { User, UserFormData, LoginData, RegisterData } from '../types/user';
 
 const API_BASE_URL = 'http://localhost:3000/api';
 
@@ -8,30 +8,54 @@ export const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // Important for handling cookies
 });
 
-export const userApi = {
-  getUsers: async () => {
-    const response = await api.get<User[]>('/users');
+// Add response interceptor for error handling
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Handle unauthorized access
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+export const authApi = {
+  login: async (credentials: LoginData) => {
+    const response = await api.post<{ user: User }>('/auth/login', credentials);
     return response.data;
   },
 
-  getUser: async (id: number) => {
-    const response = await api.get<User>(`/users/${id}`);
+  register: async (userData: RegisterData) => {
+    const response = await api.post<{ user: User }>('/auth/register', userData);
     return response.data;
   },
 
-  createUser: async (userData: UserFormData) => {
-    const response = await api.post<User>('/users', userData);
+  logout: async () => {
+    await api.post('/auth/logout');
+  },
+
+  getCurrentUser: async () => {
+    const response = await api.get<{ user: User }>('/user/me');
+    return response.data;
+  },
+};
+
+export const adminApi = {
+  getAllUsers: async () => {
+    const response = await api.get<{ users: User[] }>('/admin/users');
     return response.data;
   },
 
-  updateUser: async (id: number, userData: UserFormData) => {
-    const response = await api.put<User>(`/users/${id}`, userData);
+  updateUserRole: async (userId: number, role: string) => {
+    const response = await api.put<{ user: User }>(`/admin/users?id=${userId}`, { role });
     return response.data;
   },
 
-  deleteUser: async (id: number) => {
-    await api.delete(`/users/${id}`);
+  deleteUser: async (userId: number) => {
+    await api.delete(`/admin/users?id=${userId}`);
   },
 };

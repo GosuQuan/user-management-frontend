@@ -1,0 +1,177 @@
+.landing-container {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0f1c2d 0%, #1a0b2e 50%, #2d0a31 100%);
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.landing-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(41, 196, 255, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255, 0, 128, 0.2) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.landing-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0px,
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 1px,
+    transparent 30px
+  );
+  pointer-events: none;
+}
+
+.landing-content {
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+}
+
+.landing-content h1 {
+  font-size: 64px !important;
+  margin-bottom: 24px !important;
+  background: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5),
+               0 0 40px rgba(255, 0, 255, 0.3);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.landing-content .ant-typography {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.feature-card {
+  margin: 16px;
+  text-align: left;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 255, 255, 0.4);
+}
+
+.feature-card .ant-card-body {
+  position: relative;
+  z-index: 1;
+}
+
+.feature-card h4 {
+  color: #00ffff !important;
+  margin-bottom: 16px;
+  font-size: 20px !important;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.feature-card .ant-typography {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.button-group {
+  margin-top: 48px;
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.button-group .ant-btn {
+  min-width: 160px;
+  height: 48px;
+  font-size: 18px;
+  border-radius: 24px;
+  transition: all 0.3s ease;
+}
+
+.button-group .ant-btn-primary {
+  background: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+  border: none;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.button-group .ant-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+}
+
+.button-group .ant-btn-default {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.button-group .ant-btn-default:hover {
+  border-color: #00ffff;
+  color: #00ffff;
+  transform: translateY(-2px);
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5),
+                 0 0 40px rgba(255, 0, 255, 0.3);
+  }
+  to {
+    text-shadow: 0 0 30px rgba(0, 255, 255, 0.8),
+                 0 0 50px rgba(255, 0, 255, 0.5);
+  }
+}
+
+/* 添加网格背景 */
+.grid-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  animation: grid-animation 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes grid-animation {
+  0% {
+    transform: rotateX(60deg) translateZ(0);
+  }
+  100% {
+    transform: rotateX(60deg) translateZ(-100px);
+  }
+}

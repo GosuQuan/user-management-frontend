@@ -1,0 +1,124 @@
+.auth-container {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0f1c2d 0%, #1a0b2e 50%, #2d0a31 100%);
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(41, 196, 255, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255, 0, 128, 0.2) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.auth-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0px,
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 1px,
+    transparent 30px
+  );
+  pointer-events: none;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  margin: 20px;
+}
+
+.auth-card .ant-card-body {
+  padding: 32px;
+}
+
+.auth-form .ant-form-item {
+  margin-bottom: 24px;
+}
+
+.auth-form .ant-input-affix-wrapper {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.auth-form .ant-input {
+  background: transparent;
+  color: #000000;
+}
+
+.auth-form .ant-input::placeholder {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.auth-form .ant-input-password-icon {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.auth-form .ant-btn {
+  height: 48px;
+  font-size: 16px;
+  background: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+  border: none;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.auth-form .ant-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+}
+
+.auth-title {
+  text-align: center;
+  margin-bottom: 32px !important;
+  color: #000000 !important;
+  font-size: 28px !important;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.auth-link {
+  text-align: center;
+}
+
+.auth-link a {
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.auth-link a:hover {
+  color: #ff00ff;
+  text-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+}
+
+/* 修复输入框文字颜色 */
+.auth-form .ant-input-affix-wrapper input {
+  color: #000000 !important;
+}
+
+.auth-form .ant-input-affix-wrapper .anticon {
+  color: rgba(0, 0, 0, 0.45);
+}

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, message } from 'antd';
+import { Modal, Form, Input, Select, message } from 'antd';
 import { User, UserFormData } from '../types/user';
-import { userApi } from '../services/api';
+import { adminApi, authApi } from '../services/api';
 
 interface UserModalProps {
   visible: boolean;
@@ -17,75 +17,86 @@ const UserModal: React.FC<UserModalProps> = ({
   user,
 }) => {
   const [form] = Form.useForm();
+  const isEdit = !!user;
 
   useEffect(() => {
     if (visible && user) {
       form.setFieldsValue({
-        name: user.name,
+        username: user.username,
         email: user.email,
-        phone: user.phone,
+        role: user.role,
       });
     } else {
       form.resetFields();
     }
   }, [visible, user, form]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (values: UserFormData) => {
     try {
-      const values = await form.validateFields();
-      if (user) {
-        await userApi.updateUser(user.id, values);
-        message.success('更新成功');
+      if (isEdit && user) {
+        await adminApi.updateUserRole(user.id, values.role!);
+        message.success('User updated successfully');
       } else {
-        await userApi.createUser(values);
-        message.success('创建成功');
+        await adminApi.register({
+          username: values.username!,
+          email: values.email!,
+          password: values.password!, // Make sure to add password field to form
+        });
+        message.success('User created successfully');
       }
       onSuccess();
     } catch (error) {
-      if (error instanceof Error) {
-        message.error(error.message);
-      } else {
-        message.error('操作失败');
-      }
+      message.error(isEdit ? 'Failed to update user' : 'Failed to create user');
     }
   };
 
   return (
     <Modal
-      title={user ? '编辑用户' : '添加用户'}
+      title={isEdit ? 'Edit User' : 'Add User'}
       open={visible}
-      onOk={handleSubmit}
       onCancel={onClose}
-      destroyOnClose
+      onOk={() => form.submit()}
     >
       <Form
         form={form}
         layout="vertical"
-        initialValues={{ name: '', email: '', phone: '' }}
+        onFinish={handleSubmit}
       >
         <Form.Item
-          name="name"
-          label="姓名"
-          rules={[{ required: true, message: '请输入姓名' }]}
+          name="username"
+          label="Username"
+          rules={[{ required: true, message: 'Please input username' }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           name="email"
-          label="邮箱"
+          label="Email"
           rules={[
-            { required: true, message: '请输入邮箱' },
-            { type: 'email', message: '请输入有效的邮箱地址' },
+            { required: true, message: 'Please input email' },
+            { type: 'email', message: 'Please input valid email' }
           ]}
         >
           <Input />
         </Form.Item>
+        {!isEdit && (
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[{ required: true, message: 'Please input password' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+        )}
         <Form.Item
-          name="phone"
-          label="电话"
-          rules={[{ required: true, message: '请输入电话' }]}
+          name="role"
+          label="Role"
+          rules={[{ required: true, message: 'Please select role' }]}
         >
-          <Input />
+          <Select>
+            <Select.Option value="USER">User</Select.Option>
+            <Select.Option value="ADMIN">Admin</Select.Option>
+          </Select>
         </Form.Item>
       </Form>
     </Modal>

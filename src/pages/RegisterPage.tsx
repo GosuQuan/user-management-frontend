@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Input, Button, Card, Typography, message } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
+import { authApi } from '../services/api';
 import './AuthPages.css';
 
 const { Title } = Typography;
@@ -16,16 +17,18 @@ interface RegisterFormData {
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<RegisterFormData>();
 
   const handleSubmit = async (values: RegisterFormData) => {
     try {
-      // TODO: 实现注册逻辑
-      console.log('注册信息：', values);
+      const { confirmPassword, ...registerData } = values;
+      const { user } = await authApi.register(registerData);
+      console.log('注册成功！', user);
       message.success('注册成功！');
       navigate('/login');
-    } catch (error) {
-      message.error('注册失败，请重试！');
+    } catch (error: any) {
+      console.error('注册错误：', error);
+      message.error(error.response?.data?.message || '注册失败，请重试！');
     }
   };
 

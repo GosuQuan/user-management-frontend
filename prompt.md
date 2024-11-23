@@ -94,6 +94,7 @@ const UserList: React.FC = () => {
     try {
       setLoading(true);
       const data = await userApi.getUsers();
+      
       setUsers(data);
     } catch (error) {
       message.error('获取用户列表失败');

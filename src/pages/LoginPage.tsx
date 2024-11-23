@@ -1,28 +1,31 @@
 import React from 'react';
 import { Form, Input, Button, Card, Typography, message } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
+import { authApi } from '../services/api';
 import './AuthPages.css';
 
 const { Title } = Typography;
 
 interface LoginFormData {
-  username: string;
+  email: string;
   password: string;
 }
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<LoginFormData>();
 
   const handleSubmit = async (values: LoginFormData) => {
     try {
-      // TODO: 实现登录逻辑
-      console.log('登录信息：', values);
+      const { user } = await authApi.login(values);
+      console.log('登录成功！', user);
+      localStorage.setItem('user', JSON.stringify(user));
       message.success('登录成功！');
       navigate('/dashboard');
-    } catch (error) {
-      message.error('登录失败，请重试！');
+    } catch (error: any) {
+      console.error('登录错误：', error);
+      message.error(error.response?.data?.message || '登录失败，请检查邮箱和密码！');
     }
   };
 
@@ -40,12 +43,15 @@ const LoginPage: React.FC = () => {
           className="auth-form"
         >
           <Form.Item
-            name="username"
-            rules={[{ required: true, message: '请输入用户名！' }]}
+            name="email"
+            rules={[
+              { required: true, message: '请输入邮箱！' },
+              { type: 'email', message: '请输入有效的邮箱地址！' }
+            ]}
           >
             <Input
-              prefix={<UserOutlined />}
-              placeholder="用户名"
+              prefix={<MailOutlined />}
+              placeholder="邮箱"
               size="large"
             />
           </Form.Item>

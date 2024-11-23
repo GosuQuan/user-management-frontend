@@ -14,7 +14,8 @@ const UserList: React.FC = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const { users: data } = await adminApi.getAllUsers();
+      const data = await adminApi.getAllUsers();
+
       setUsers(data);
     } catch (error) {
       message.error('获取用户列表失败');

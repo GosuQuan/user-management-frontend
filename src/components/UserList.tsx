@@ -49,11 +49,11 @@ const UserList: React.FC = () => {
   const handleModalClose = () => {
     setCurrentUser(null);
     setModalVisible(false);
-    fetchUsers();
   };
 
   const handleModalSuccess = () => {
-    handleModalClose();
+    setCurrentUser(null);
+    setModalVisible(false);
     fetchUsers();
   };
 

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { User, UserFormData, LoginData, RegisterData } from '../types/user';
+import { handleAuthError } from '../utils/auth';
 
 const API_BASE_URL = 'http://localhost:3000/api';
 
@@ -15,9 +16,10 @@ export const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Handle unauthorized access
-      window.location.href = '/login';
+    // 不处理登录接口的401错误
+    if (error.response?.status === 401 && !error.config.url.includes('/auth/login')) {
+      // Handle unauthorized access with loading state
+      handleAuthError();
     }
     return Promise.reject(error);
   }
